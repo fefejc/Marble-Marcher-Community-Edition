@@ -35,6 +35,7 @@ public:
 	void ReInitialize(int w, int h);
 
 	void SetOutputTexture(sf::Texture& tex);
+	void SetOutputTexture(GLuint tex);
 	void LoadShader(std::string shader_file);
 	std::vector<std::string> GetConfigurationsList();
 	std::string GetConfigFolder();
