@@ -21,10 +21,11 @@ Scene *scene_ptr;
 Overlays *overlays_ptr;
 Renderer *renderer_ptr;
 sf::RenderWindow *window;
-sf::Texture *main_txt;
 sf::Texture *screenshot_txt;
+GLuint *main_txt;
+GLuint *framebuffer;
 
-void SetPointers(sf::RenderWindow *w, Scene* scene, Overlays* overlays, Renderer* rd, sf::Texture *main, sf::Texture *screensht)
+void SetPointers(sf::RenderWindow *w, Scene* scene, Overlays* overlays, Renderer* rd, GLuint *main, sf::Texture *screensht, GLuint *fb)
 {
 	window = w;
 	scene_ptr = scene;
@@ -32,6 +33,7 @@ void SetPointers(sf::RenderWindow *w, Scene* scene, Overlays* overlays, Renderer
 	renderer_ptr = rd;
 	main_txt = main;
 	screenshot_txt = screensht;
+	framebuffer = fb;
 }
 
 void OpenMainMenu(Scene * scene, Overlays * overlays)
@@ -1005,8 +1007,11 @@ void InitializeRendering(std::string config)
 	UpdateUniforms();
 	renderer_ptr->camera.SetFocus(SETTINGS.stg.DOF_focus);
 	renderer_ptr->camera.SetExposure(SETTINGS.stg.exposure);
+
+	glDeleteTextures(1, main_txt);
+	glCreateTextures(GL_TEXTURE_2D, 1, main_txt);
+	glTextureStorage2D(*main_txt, 1, GL_RGBA8, rendering_resolution.x, rendering_resolution.y);
 	
-	main_txt->create(rendering_resolution.x, rendering_resolution.y);
 	renderer_ptr->SetOutputTexture(*main_txt);
 	screenshot_txt->create(screenshot_resolution.x, screenshot_resolution.y);
 }
@@ -1122,6 +1127,10 @@ void TW_CALL ApplySettings(void *data)
 		overlays_ptr->SetAntTweakBar(window->getSize().x, window->getSize().y);
 	}
 
+	//GL framebuffer and textures
+	glGenFramebuffers(1, framebuffer);
+	glGenTextures(1, main_txt);
+
 	window->setFramerateLimit(SETTINGS.stg.fps_limit);
 	std::vector<std::string> langs = LOCAL.GetLanguages();
 	LOCAL.SetLanguage(langs[SETTINGS.stg.language]);
@@ -1129,6 +1138,8 @@ void TW_CALL ApplySettings(void *data)
 	std::vector<std::string> configs = renderer_ptr->GetConfigurationsList();
 
 	InitializeRendering(configs[SETTINGS.stg.shader_config]);
+
+	glNamedFramebufferTexture(*framebuffer, GL_COLOR_ATTACHMENT0, *main_txt, 0);
 
 	if (game_mode == LEVEL_EDITOR)
 		SetCameraFocus(1e10);
