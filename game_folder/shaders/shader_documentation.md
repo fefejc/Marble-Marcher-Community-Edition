@@ -25,7 +25,7 @@ height
 #####################################################
 ```
 
-Each comfiguration defines a shader pipeline, a set of shaders executed in order.
+Each configuration defines a shader pipeline, a set of shaders executed in order.
 
 All the lines starting with a '#' are ignored, and can be used as comments.
 The first uncommented line describes the number of global images, which are available in every shader in the configuration, and can be written or read at the same time, OpenGL flag - READ_WRITE.
