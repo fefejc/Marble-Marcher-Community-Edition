@@ -74,7 +74,7 @@ int DirExists(const char *path);
 
 void FirstStart(Overlays* overlays);
 
-void SetPointers(sf::RenderWindow * w, Scene * scene, Overlays * overlays, Renderer * rd, GLuint *main, sf::Texture * screensht);
+void SetPointers(sf::RenderWindow * w, Scene * scene, Overlays * overlays, Renderer * rd, GLuint *main, sf::Texture * screensht, GLuint *fb);
 sf::Vector2i getResolution(int i);
 void TakeScreenshot();
 
