@@ -79,7 +79,7 @@ int main(int argc, char *argv[]) {
   
 	Renderer rend(main_config);
 	sf::Texture screenshot_txt;
-	GLuint framebuffer, main_txt
+	GLuint framebuffer, main_txt;
 	
 	//Create the fractal scene
 	Scene scene(level_music);
