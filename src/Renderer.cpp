@@ -236,6 +236,11 @@ void Renderer::SetOutputTexture(sf::Texture & tex)
 	shader_textures[shader_textures.size()-1][0] = tex.getNativeHandle();
 }
 
+void Renderer::SetOutputTexture(GLuint tex)
+{
+	shader_textures[shader_textures.size()-1][0] = tex;
+}
+
 void Renderer::LoadShader(std::string shader_file)
 {
 	shader_pipeline.push_back(ComputeShader(shader_file));
