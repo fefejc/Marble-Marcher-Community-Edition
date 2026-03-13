@@ -78,7 +78,8 @@ int main(int argc, char *argv[]) {
 	sf::RenderWindow window;
   
 	Renderer rend(main_config);
-	sf::Texture main_txt, screenshot_txt;
+	sf::Texture screenshot_txt;
+	GLuint framebuffer, main_txt
 	
 	//Create the fractal scene
 	Scene scene(level_music);
@@ -90,7 +91,7 @@ int main(int argc, char *argv[]) {
 	mouse_pos = sf::Vector2i(0, 0);
 	mouse_prev_pos = sf::Vector2i(0, 0);
   
-	SetPointers(&window, &scene, &overlays, &rend, &main_txt, &screenshot_txt);
+	SetPointers(&window, &scene, &overlays, &rend, &main_txt, &screenshot_txt, &framebuffer);
 
 	ApplySettings(nullptr);
 
@@ -682,6 +683,7 @@ int main(int argc, char *argv[]) {
 			{
 				if (!(taken_screenshot && SETTINGS.stg.screenshot_preview))
 				{
+					glNamedFramebufferTexture(framebuffer, GL_COLOR_ATTACHMENT0, main_txt, 0);
 					scene.WriteRenderer(rend);
 					rend.camera.SetAspectRatio((float)window.getSize().x / (float)window.getSize().y);
 					rend.SetOutputTexture(main_txt);
@@ -689,10 +691,10 @@ int main(int argc, char *argv[]) {
 					rend.Render();
 					window.resetGLStates();
 					//Draw render texture to main window
-					sf::Sprite sprite(main_txt);
-					sprite.setScale(float(window.getSize().x) / float(rend.variables["width"]),
-						float(window.getSize().y) / float(rend.variables["height"]));
-					window.draw(sprite);
+					glBindFramebuffer(GL_READ_FRAMEBUFFER, framebuffer);
+					glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+
+					glBlitFramebuffer(rend.variables["width"], 0, 0, rend.variables["height"], window.getSize().x, window.getSize().y, 0, 0, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 				}
 				else
 				{
