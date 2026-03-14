@@ -2,7 +2,7 @@
 
 ### Version 1.4.6
 
-![Logo](https://github.com/WAUthethird/Marble-Marcher-Community-Edition/blob/master/doc/LOGO.PNG)
+![Logo](https://github.com/fefejc/Marble-Marcher-Community-Edition/blob/master/doc/LOGO.PNG)
 
 This is the community edition of Marble Marcher, a procedurally rendered fractal physics marble game in which you must get to the flag in each level as fast as you can. If you complete all 24 original levels, cheats are unlocked for extra fun!
 
@@ -65,9 +65,9 @@ Compared to the original game, the following features and improvements have been
 - Ingame statistics added (marble speed, ground/air state, ...). Press `o` to toggle.
 - Added several new levels
 - And dozens of smaller features
-![Editor](https://github.com/WAUthethird/Marble-Marcher-Community-Edition/blob/development/doc/EDITOR.PNG)
-![Levels](https://github.com/WAUthethird/Marble-Marcher-Community-Edition/blob/development/doc/LEVELS.PNG)
-For more changes, please see the [release notes](https://github.com/WAUthethird/Marble-Marcher-Community-Edition/releases).
+![Editor](https://github.com/fefejc/Marble-Marcher-Community-Edition/blob/development/doc/EDITOR.PNG)
+![Levels](https://github.com/fefejc/Marble-Marcher-Community-Edition/blob/development/doc/LEVELS.PNG)
+For more changes, please see the [release notes](https://github.com/fefejc/Marble-Marcher-Community-Edition/releases).
 
 ## Proposed Changes
 Though Marble Marcher CE is a largely finished game, there are still several improvements we'd like to implement. Here are our proposed changes:
@@ -165,7 +165,7 @@ Alternatively, one can use the platform-dependent build system, for example `Mak
 
 ### Arch Linux
 * `cd ~`
-* `git clone https://github.com/WAUthethird/Marble-Marcher-Community-Edition.git`
+* `git clone https://github.com/fefejc/Marble-Marcher-Community-Edition.git`
 * `cd Marble-Marcher-Community-Edition`
 * `mkdir build && cd build`
 * `cmake ..`
@@ -214,7 +214,7 @@ make
 
 The next task is to clone (or download)
 [Marble
-Marcher](https://github.com/WAUthethird/Marble-Marcher-Community-Edition).
+Marcher](https://github.com/fefejc/Marble-Marcher-Community-Edition).
 In the following examples we assume you have downloaded
 _Marble Marcher_ into _Downloads_-folder as well.
 First you create an empty folder _build_ in the _Marble Marcher_
@@ -226,7 +226,7 @@ also have to specify the location of
 environment variables.  You can do all these steps as follows:
 ```
 cd ~/Downloads
-git clone https://github.com/WAUthethird/Marble-Marcher-Community-Edition.git
+git clone https://github.com/fefejc/Marble-Marcher-Community-Edition.git
 cd Marble-Marcher-Community-Edition
 mkdir build
 cd build
@@ -288,7 +288,7 @@ Otherwise we follow exactly the steps for
 Ubuntu 20.04.  So on 18.04 you can do
 ```
 cd ~/Downloads
-git clone https://github.com/WAUthethird/Marble-Marcher-Community-Edition.git
+git clone https://github.com/fefejc/Marble-Marcher-Community-Edition.git
 cd Marble-Marcher-Community-Edition
 mkdir build
 cd build             
