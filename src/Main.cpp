@@ -21,7 +21,7 @@
 #include "Level.h"
 #include "Res.h"
 #include <SFML/Audio.hpp>
-//	#include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include <SFML/OpenGL.hpp>
 #include <AntTweakBar.h>
 #include <sys/types.h>
