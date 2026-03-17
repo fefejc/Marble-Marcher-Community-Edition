@@ -21,10 +21,10 @@ Scene *scene_ptr;
 Overlays *overlays_ptr;
 Renderer *renderer_ptr;
 sf::RenderWindow *window;
-sf::Texture *main_txt;
-sf::Texture *screenshot_txt;
+GLuint *main_txt, *screenshot_txt;
+GLuint *framebuffer;
 
-void SetPointers(sf::RenderWindow *w, Scene* scene, Overlays* overlays, Renderer* rd, sf::Texture *main, sf::Texture *screensht)
+void SetPointers(sf::RenderWindow *w, Scene* scene, Overlays* overlays, Renderer* rd, GLuint *main, GLuint *screensht, GLuint *fb)
 {
 	window = w;
 	scene_ptr = scene;
@@ -32,6 +32,7 @@ void SetPointers(sf::RenderWindow *w, Scene* scene, Overlays* overlays, Renderer
 	renderer_ptr = rd;
 	main_txt = main;
 	screenshot_txt = screensht;
+	framebuffer = fb;
 }
 void OpenMainMenu(Scene * scene, Overlays * overlays)
 {
@@ -953,10 +954,10 @@ void TakeScreenshot()
 	renderer_ptr->ReInitialize(screenshot_resolution.x, screenshot_resolution.y);
 
 	scene_ptr->WriteRenderer(*renderer_ptr);
-//	renderer_ptr->SetOutputTexture(*screenshot_txt);
+	renderer_ptr->SetOutputTexture(*screenshot_txt);
 
 	renderer_ptr->camera.SetMotionBlur(0);
-
+/*
 	std::vector<char> buffer(screenshot_resolution.x * screenshot_resolution.y * 4);
 	std::string filename = (std::string)"screenshots/screenshot" + (std::string)num2str(time(NULL)) + (std::string)".jpg";
 	
@@ -964,12 +965,12 @@ void TakeScreenshot()
 	for(int i = 0; i < SETTINGS.stg.screenshot_samples; i++) 	renderer_ptr->Render();
 	window -> resetGLStates();
 
-//	glPixelStorei(GL_PACK_ALIGNMENT, 1);
-//	glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA8, GL_UNSIGNED_BYTE, buffer.data());
+	glPixelStorei(GL_PACK_ALIGNMENT, 1);
+	glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA8, GL_UNSIGNED_BYTE, buffer.data());
 
-//	stbi_flip_vertically_on_write(true);
-//	stbi_write_jpg(filename.c_str(), screenshot_resolution.x, screenshot_resolution.y, 3, buffer.data(), 100);
-
+	stbi_flip_vertically_on_write(true);
+	stbi_write_jpg(filename.c_str(), screenshot_resolution.x, screenshot_resolution.y, 3, buffer.data(), 100);
+*/
 	scene_ptr->SetResolution(rendering_resolution.x, rendering_resolution.y);
 	renderer_ptr->ReInitialize(rendering_resolution.x, rendering_resolution.y);
 	renderer_ptr->SetOutputTexture(*main_txt);
@@ -1013,9 +1014,15 @@ void InitializeRendering(std::string config)
 	renderer_ptr->camera.SetFocus(SETTINGS.stg.DOF_focus);
 	renderer_ptr->camera.SetExposure(SETTINGS.stg.exposure);
 	
-	(void)main_txt->resize((sf::Vector2u)rendering_resolution);
+	glDeleteTextures(1, main_txt);
+	glCreateTextures(GL_TEXTURE_2D, 1, main_txt);
+	glTextureStorage2D(*main_txt, 1, GL_RGBA8, rendering_resolution.x, rendering_resolution.y);
+
+	glDeleteTextures(1, screenshot_txt);
+	glCreateTextures(GL_TEXTURE_2D, 1, screenshot_txt);
+	glTextureStorage2D(*main_txt, 1, GL_RGBA8, screenshot_resolution.x, screenshot_resolution.y);
+
 	renderer_ptr->SetOutputTexture(*main_txt);
-	(void)screenshot_txt->resize((sf::Vector2u)screenshot_resolution);
 }
 
 void SetCameraFocus(float f)
@@ -1126,6 +1133,11 @@ void TW_CALL ApplySettings(void *data)
 		SETTINGS.first_start = false;
 
 		overlays_ptr->SetAntTweakBar(window->getSize().x, window->getSize().y);
+
+		//GL framebuffer and textures
+		glGenFramebuffers(1, framebuffer);
+		glGenTextures(1, main_txt);
+		glGenTextures(1, screenshot_txt);
 	}
 
 	window->setFramerateLimit(SETTINGS.stg.fps_limit);
@@ -1135,6 +1147,8 @@ void TW_CALL ApplySettings(void *data)
 	std::vector<std::string> configs = renderer_ptr->GetConfigurationsList();
 
 	InitializeRendering(configs[SETTINGS.stg.shader_config]);
+
+	glNamedFramebufferTexture(*framebuffer, GL_COLOR_ATTACHMENT0, *main_txt, 0);
 
 	if (game_mode == LEVEL_EDITOR)
 		SetCameraFocus(1e10);
