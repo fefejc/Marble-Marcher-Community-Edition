@@ -174,16 +174,17 @@ public:
   Eigen::Vector3f MouseRayCast(int mousex, int mousey, float min_dist = MIN_DIST);
   Eigen::Vector3f RayMarch(const Eigen::Vector3f& pt, const Eigen::Vector3f& ray, float min_dist = MIN_DIST);
 
-  sf::Sound sound_goal;
   sf::SoundBuffer buff_goal;
-  sf::Sound sound_bounce1;
   sf::SoundBuffer buff_bounce1;
-  sf::Sound sound_bounce2;
   sf::SoundBuffer buff_bounce2;
-  sf::Sound sound_bounce3;
   sf::SoundBuffer buff_bounce3;
-  sf::Sound sound_shatter;
   sf::SoundBuffer buff_shatter;
+
+  sf::Sound sound_goal = sf::Sound(buff_goal);
+  sf::Sound sound_bounce1 = sf::Sound(buff_bounce1);
+  sf::Sound sound_bounce2 = sf::Sound(buff_bounce2);
+  sf::Sound sound_bounce3 = sf::Sound(buff_bounce3);
+  sf::Sound sound_shatter = sf::Sound(buff_shatter);
 
 protected:
   void SetLevel(int level);

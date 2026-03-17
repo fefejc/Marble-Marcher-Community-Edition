@@ -33,7 +33,6 @@ void SetPointers(sf::RenderWindow *w, Scene* scene, Overlays* overlays, Renderer
 	main_txt = main;
 	screenshot_txt = screensht;
 }
-
 void OpenMainMenu(Scene * scene, Overlays * overlays)
 {
 	SetCameraFocus(4.5);
@@ -189,7 +188,7 @@ void OpenCredits(Scene * scene, Overlays * overlays)
 	//add a default callback
 	creditslist.SetDefaultFunction([scene, overlays](sf::RenderWindow * window, InputState & state)
 	{
-		if (state.keys[sf::Keyboard::Escape])
+		if (state.keys[(int)sf::Keyboard::Key::Escape])
 		{
 			OpenMainMenu(scene, overlays);
 		}
@@ -295,7 +294,7 @@ void OpenControlMenu(Scene * scene, Overlays * overlays)
 	//add a default callback
 	controls.SetDefaultFunction([scene, overlays](sf::RenderWindow * window, InputState & state)
 	{
-		if (state.keys[sf::Keyboard::Escape])
+		if (state.keys[(int)sf::Keyboard::Key::Escape])
 		{
 			OpenMainMenu(scene, overlays);
 		}
@@ -596,12 +595,12 @@ void OpenLevelMenu(Scene* scene, Overlays* overlays)
 	Newlvl.AddObject(&newlvl, Object::Allign::CENTER);
 	levels.AddObject(&Newlvl, Object::Allign::LEFT);
 	
-	sf::Image edit; edit.loadFromFile(edit_png);
-	sf::Texture edittxt; edittxt.loadFromImage(edit);
+	sf::Image edit; (void)edit.loadFromFile(edit_png);
+	sf::Texture edittxt; (void)edittxt.loadFromImage(edit);
 	edittxt.setSmooth(true);
 
-	sf::Image remove; remove.loadFromFile(delete_png);
-	sf::Texture removetxt; removetxt.loadFromImage(remove);
+	sf::Image remove; (void)remove.loadFromFile(delete_png);
+	sf::Texture removetxt; (void)removetxt.loadFromImage(remove);
 	removetxt.setSmooth(true);
 
 	for (int i = 0; i < scene->levels.GetLevelNum(); i++)
@@ -872,7 +871,7 @@ void FirstStart(Overlays* overlays)
 	RemoveAllObjects();
 
 	sf::VideoMode fs_size = sf::VideoMode::getDesktopMode();
-	unsigned int barPos[2] = { (fs_size.width - 600)/2 , (fs_size.height - 300) / 2 };
+	unsigned int barPos[2] = { (fs_size.size.x - 600)/2 , (fs_size.size.y - 300) / 2 };
 	TwSetParam(overlays_ptr->flaunch, NULL, "position", TW_PARAM_INT32, 2, barPos); 
 
 	sf::Vector2f wsize = default_size;
@@ -954,14 +953,22 @@ void TakeScreenshot()
 	renderer_ptr->ReInitialize(screenshot_resolution.x, screenshot_resolution.y);
 
 	scene_ptr->WriteRenderer(*renderer_ptr);
-	renderer_ptr->SetOutputTexture(*screenshot_txt);
+//	renderer_ptr->SetOutputTexture(*screenshot_txt);
 
 	renderer_ptr->camera.SetMotionBlur(0);
+
+	std::vector<char> buffer(screenshot_resolution.x * screenshot_resolution.y * 4);
+	std::string filename = (std::string)"screenshots/screenshot" + (std::string)num2str(time(NULL)) + (std::string)".jpg";
 	
 	//a few rendering steps to converge the TXAA
 	for(int i = 0; i < SETTINGS.stg.screenshot_samples; i++) 	renderer_ptr->Render();
 	window -> resetGLStates();
-	screenshot_txt->copyToImage().saveToFile((std::string)"screenshots/screenshot" + (std::string)num2str(time(NULL)) + ".jpg");
+
+//	glPixelStorei(GL_PACK_ALIGNMENT, 1);
+//	glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA8, GL_UNSIGNED_BYTE, buffer.data());
+
+//	stbi_flip_vertically_on_write(true);
+//	stbi_write_jpg(filename.c_str(), screenshot_resolution.x, screenshot_resolution.y, 3, buffer.data(), 100);
 
 	scene_ptr->SetResolution(rendering_resolution.x, rendering_resolution.y);
 	renderer_ptr->ReInitialize(rendering_resolution.x, rendering_resolution.y);
@@ -1006,11 +1013,10 @@ void InitializeRendering(std::string config)
 	renderer_ptr->camera.SetFocus(SETTINGS.stg.DOF_focus);
 	renderer_ptr->camera.SetExposure(SETTINGS.stg.exposure);
 	
-	main_txt->create(rendering_resolution.x, rendering_resolution.y);
+	(void)main_txt->resize((sf::Vector2u)rendering_resolution);
 	renderer_ptr->SetOutputTexture(*main_txt);
-	screenshot_txt->create(screenshot_resolution.x, screenshot_resolution.y);
+	(void)screenshot_txt->resize((sf::Vector2u)screenshot_resolution);
 }
-
 
 void SetCameraFocus(float f)
 {
@@ -1088,15 +1094,15 @@ void TW_CALL ApplySettings(void *data)
 		fullscreen_current = SETTINGS.stg.fullscreen;
 
 		sf::VideoMode screen_size;
-		sf::Uint32 window_style;
+		sf::State window_state;
 		bool fullscreen = SETTINGS.stg.fullscreen;
 		if (fullscreen) {
 			screen_size = sf::VideoMode::getDesktopMode();
-			window_style = sf::Style::Fullscreen;
+			window_state = sf::State::Fullscreen;
 		}
 		else {
 			screen_size = sf::VideoMode::getDesktopMode();
-			window_style = sf::Style::Default;
+			window_state = sf::State::Windowed;
 		}
 
 		//GL settings
@@ -1104,7 +1110,7 @@ void TW_CALL ApplySettings(void *data)
 		settings.majorVersion = 4;
 		settings.minorVersion = 3;
 
-		window->create(screen_size, "Marble Marcher: Community Edition", window_style, settings);
+		window->create(screen_size, "Marble Marcher: Community Edition", window_state, settings);
 		window->setVerticalSyncEnabled(SETTINGS.stg.VSYNC);
 		window->setKeyRepeatEnabled(false);
 		
@@ -1113,7 +1119,7 @@ void TW_CALL ApplySettings(void *data)
 		if (!fullscreen)
 		{
 			sf::VideoMode fs_size = sf::VideoMode::getDesktopMode();
-			window->setSize(sf::Vector2u(fs_size.width, fs_size.height - 100.f));
+			window->setSize(sf::Vector2u(fs_size.size.x, fs_size.size.y - 100.f));
 			window->setPosition(sf::Vector2i(0, 0));
 		}
 

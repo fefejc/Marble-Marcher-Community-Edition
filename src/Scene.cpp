@@ -236,16 +236,11 @@ Scene::Scene(sf::Music* level_music) :
   frac_params.setOnes();
   frac_params_smooth.setOnes();
   SnapCamera();
-  buff_goal.loadFromFile(goal_wav);
-  sound_goal.setBuffer(buff_goal);
-  buff_bounce1.loadFromFile(bounce1_wav);
-  sound_bounce1.setBuffer(buff_bounce1);
-  buff_bounce2.loadFromFile(bounce2_wav);
-  sound_bounce2.setBuffer(buff_bounce2);
-  buff_bounce3.loadFromFile(bounce3_wav);
-  sound_bounce3.setBuffer(buff_bounce3);
-  buff_shatter.loadFromFile(shatter_wav);
-  sound_shatter.setBuffer(buff_shatter);
+  (void)buff_goal.loadFromFile(goal_wav);
+  (void)buff_bounce1.loadFromFile(bounce1_wav);
+  (void)buff_bounce2.loadFromFile(bounce2_wav);
+  (void)buff_bounce3.loadFromFile(bounce3_wav);
+  (void)buff_shatter.loadFromFile(shatter_wav);
 }
 Eigen::Vector3f Scene::GetVelocity() {
 	return marble_vel;

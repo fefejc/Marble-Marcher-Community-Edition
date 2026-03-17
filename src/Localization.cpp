@@ -22,7 +22,7 @@ void Localization::LoadLocalsFromFolder(std::string folder, Fonts *fonts)
 	}
 
 
-	if (!fonts_ptr->default_font.loadFromFile("assets/Inconsolata-Bold.ttf"))
+	if (!fonts_ptr->default_font.openFromFile("assets/Inconsolata-Bold.ttf"))
 	{
 		ERROR_MSG("Unable to load default font");
 	}
@@ -91,12 +91,12 @@ void Localization::LoadLocalFromFile(fs::path path)
 	//Load the font
 	sf::Font font;
 	std::wstring assets = L"assets/";
-	if (!font.loadFromFile(tostring(assets + local["font_1"]))) {
+	if (!font.openFromFile(tostring(assets + local["font_1"]))) {
 		ERROR_MSG("Unable to load font");
 	}
 	//Load the mono font
 	sf::Font font_mono;
-	if (!font_mono.loadFromFile(tostring(assets + local["font_2"]))) {
+	if (!font_mono.openFromFile(tostring(assets + local["font_2"]))) {
 		ERROR_MSG("Unable to load mono font");
 	}
 

@@ -82,7 +82,7 @@ struct MainSettings
 	float auto_exposure_target;
 	bool touch_mode;
 
-	std::array<int, num_of_keys> control_mapping;
+	std::array<sf::Keyboard::Key, num_of_keys> control_mapping;
 	
 	//cheeets
 	bool speed_regulation;
@@ -99,11 +99,11 @@ struct MainSettings
 };
 
 extern TwEnumVal resolutions[];
-static const std::array<int, num_of_keys> default_control_mapping =
-{ sf::Keyboard::W, sf::Keyboard::S, sf::Keyboard::A, sf::Keyboard::D,
-  sf::Keyboard::Up, sf::Keyboard::Down, sf::Keyboard::Left, sf::Keyboard::Right,
-  sf::Keyboard::P, sf::Keyboard::R, sf::Keyboard::F5, sf::Keyboard::Num1, sf::Keyboard::Num2,
-	1, 2, 3, 4, 1, 2, 3};
+static const std::array<sf::Keyboard::Key, num_of_keys> default_control_mapping =
+{ sf::Keyboard::Key::W, sf::Keyboard::Key::S, sf::Keyboard::Key::A, sf::Keyboard::Key::D,
+  sf::Keyboard::Key::Up, sf::Keyboard::Key::Down, sf::Keyboard::Key::Left, sf::Keyboard::Key::Right,
+  sf::Keyboard::Key::P, sf::Keyboard::Key::R, sf::Keyboard::Key::F5, sf::Keyboard::Key::Num1, sf::Keyboard::Key::Num2,
+	sf::Keyboard::Key::Unknown, sf::Keyboard::Key::Unknown, sf::Keyboard::Key::Unknown, sf::Keyboard::Key::Unknown, sf::Keyboard::Key::Unknown, sf::Keyboard::Key::Unknown, sf::Keyboard::Key::Unknown};
 //an incomprehensible wall of default parameters 
 static const MainSettings default_settings = 
 { 

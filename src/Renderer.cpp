@@ -257,7 +257,7 @@ void Renderer::LoadExternalTextures(std::string texture_folder)
 	for (auto &path : images)
 	{
 		sf::Texture textr; 
-		textr.loadFromFile(path.string());
+		(void)textr.loadFromFile(path.string());
 		input_textures.push_back(textr);
 	}
 }

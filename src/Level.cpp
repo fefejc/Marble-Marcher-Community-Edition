@@ -599,8 +599,8 @@ void All_Levels::LoadMusicFromFolder(std::string folder)
 	for (int i = 0; i < files.size(); i++)
 	{
 		music_map.insert(std::make_pair(files[i].filename().string(), new sf::Music()));
-		music_map[files[i].filename().string()]->openFromFile(files[i].string());
-		music_map[files[i].filename().string()]->setLoop(true);
+		(void)music_map[files[i].filename().string()]->openFromFile(files[i].string());
+		music_map[files[i].filename().string()]->setLooping(true);
 		music_names.push_back(files[i].filename().string());
 	}
 }
