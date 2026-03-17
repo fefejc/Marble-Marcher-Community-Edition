@@ -953,22 +953,14 @@ void TakeScreenshot()
 	renderer_ptr->ReInitialize(screenshot_resolution.x, screenshot_resolution.y);
 
 	scene_ptr->WriteRenderer(*renderer_ptr);
-//	renderer_ptr->SetOutputTexture(*screenshot_txt);
+	renderer_ptr->SetOutputTexture(*screenshot_txt);
 
 	renderer_ptr->camera.SetMotionBlur(0);
-
-	std::vector<char> buffer(screenshot_resolution.x * screenshot_resolution.y * 4);
-	std::string filename = (std::string)"screenshots/screenshot" + (std::string)num2str(time(NULL)) + (std::string)".jpg";
 	
 	//a few rendering steps to converge the TXAA
 	for(int i = 0; i < SETTINGS.stg.screenshot_samples; i++) 	renderer_ptr->Render();
 	window -> resetGLStates();
-
-//	glPixelStorei(GL_PACK_ALIGNMENT, 1);
-//	glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA8, GL_UNSIGNED_BYTE, buffer.data());
-
-//	stbi_flip_vertically_on_write(true);
-//	stbi_write_jpg(filename.c_str(), screenshot_resolution.x, screenshot_resolution.y, 3, buffer.data(), 100);
+	screenshot_txt->copyToImage().saveToFile((std::string)"screenshots/screenshot" + (std::string)num2str(time(NULL)) + ".jpg");
 
 	scene_ptr->SetResolution(rendering_resolution.x, rendering_resolution.y);
 	renderer_ptr->ReInitialize(rendering_resolution.x, rendering_resolution.y);
@@ -976,6 +968,7 @@ void TakeScreenshot()
 	overlays_ptr->sound_screenshot.play();
 	screenshot_clock.restart();
 }
+
 
 
 void UpdateUniforms()
