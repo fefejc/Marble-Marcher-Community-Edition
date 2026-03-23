@@ -44,6 +44,7 @@ All credit goes to [HackerPoet](https://github.com/HackerPoet) (aka [CodeParade]
   - [macOS](#macos-1)
   - [Arch Linux](#arch-linux-1)
   - [Ubuntu](#ubuntu)
+  - [NixOS](#nix-os)
   - [Compiling on Windows](#compiling-on-windows)
   - [Cross-Compile for Windows on macOS](#cross-compile-for-windows-on-macos)
 - [Launching](#launching)
@@ -193,6 +194,16 @@ sudo apt-get install libsfml-dev libglm-dev libeigen3-dev \
 ```
 You may need to install more (or fewer) libraries, depending on what
 do you already have on your system.
+
+#### NixOS
+
+There is a flake defined in this repo. If you don't want to clone down the repo run the flake straight from git
+
+```
+nix run github:RegularTetragon/Marble-Marcher-Community-Edition-AMDGPU-Flaked
+```
+
+Or clone the repo down and run `nix run` inside of this directory.
 
 #### How to Install on Ubuntu 20.04
 
