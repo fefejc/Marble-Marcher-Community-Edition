@@ -44,7 +44,8 @@ All credit goes to [HackerPoet](https://github.com/HackerPoet) (aka [CodeParade]
   - [macOS](#macos-1)
   - [Arch Linux](#arch-linux-1)
   - [Ubuntu](#ubuntu)
-  - [NixOS](#nix-os)
+  - [Debian](#debian)
+  - [NixOS](#nixos)
   - [Compiling on Windows](#compiling-on-windows)
   - [Cross-Compile for Windows on macOS](#cross-compile-for-windows-on-macos)
 - [Launching](#launching)
@@ -112,7 +113,7 @@ The screenshot resolution and rendering resolutions are separate, so you can, fo
 
 ## System Dependencies
 * [Eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page)
-* [SFML 2.5.0](https://www.sfml-dev.org)
+* [SFML](https://www.sfml-dev.org)
 * [AntTweakBar](http://anttweakbar.sourceforge.net/)
 * [GLEW](http://glew.sourceforge.net/)
 * [GLM](https://glm.g-truc.net/)
@@ -166,7 +167,8 @@ Alternatively, one can use the platform-dependent build system, for example `Mak
 
 ### Arch Linux
 * `cd ~`
-* `git clone https://github.com/fefejc/Marble-Marcher-Community-Edition.git`
+* `git clone https://github.com/fefejc/Marble-Marcher-Community-Edition.git` for SFML 2.5.1, or
+* `git clone https://github.com/fefejc/Marble-Marcher-Community-Edition.git --branch SFML3withGLFix` for SFML 3.0.2
 * `cd Marble-Marcher-Community-Edition`
 * `mkdir build && cd build`
 * `cmake ..`
@@ -195,7 +197,7 @@ sudo apt-get install libsfml-dev libglm-dev libeigen3-dev \
 You may need to install more (or fewer) libraries, depending on what
 do you already have on your system.
 
-#### NixOS
+### NixOS
 
 There is a flake defined in this repo. If you don't want to clone down the repo run the flake straight from git
 
@@ -312,6 +314,10 @@ that can be started with
 LD_LIBRARY_PATH="$HOME/Downloads/AntTweakBar/lib" ./MarbleMarcher
 ```
 
+### Debian
+
+Debian compilation works the same as for Ubuntu, unless Debian Forky is being used, as it only has SFML 3.
+For compilation with SFML3, "--branch SFML3withGLFix" needs to be added to the clone command. All other steps are the same.
 
 ### Compiling on Windows
 Windows compilation should work just fine now. It's relatively easy to do without help, but in case you'd like them, [here are some configuring and compiling instructions](build_on_windows.md).
