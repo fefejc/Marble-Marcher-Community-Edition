@@ -1,5 +1,3 @@
-#define STB_IMAGE_IMPLEMENTATION
-#define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "Gamemodes.h"
 
 //Global variables
@@ -22,9 +20,8 @@ Scene *scene_ptr;
 Overlays *overlays_ptr;
 Renderer *renderer_ptr;
 sf::RenderWindow *window;
-GLuint *main_txt, *screenshot_txt;
-GLuint *framebuffer;
-GLubyte *screenshot_data;
+GLuint *main_txt, *screenshot_txt, *framebuffer;
+sf::Image simage;
 
 void SetPointers(sf::RenderWindow *w, Scene* scene, Overlays* overlays, Renderer* rd, GLuint *main, GLuint *screensht, GLuint *fb)
 {
@@ -973,7 +970,9 @@ void TakeScreenshot()
 	glPixelStorei(GL_PACK_ALIGNMENT, 1);
 	glReadPixels(0, 0, screenshot_resolution.x, screenshot_resolution.y, GL_RGBA, GL_UNSIGNED_BYTE, screenshot_data);
 
-	stbi_write_jpg(filename.c_str(), screenshot_resolution.x, screenshot_resolution.y, 4, screenshot_data, 100);
+	simage = sf::Image((sf::Vector2u)screenshot_resolution, (std::uint8_t*)screenshot_data);
+ 	(void)simage.saveToFile(filename);
+ 	free(screenshot_data);
 
 	scene_ptr->SetResolution(rendering_resolution.x, rendering_resolution.y);
 	renderer_ptr->ReInitialize(rendering_resolution.x, rendering_resolution.y);

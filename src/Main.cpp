@@ -694,9 +694,8 @@ int main(int argc, char *argv[]) {
 				else
 				{
 					//Draw screenshot preview
-					sf::Vector2u ssize = (sf::Vector2u)getResolution(SETTINGS.stg.screenshot_resolution);
-					sf::Image image(ssize, (std::uint8_t*)screenshot_data);
-					sf::Texture texture(image);
+					sf::Vector2u ssize = simage.getSize();
+ 					sf::Texture texture(simage);
 					sf::Sprite sprite(texture);
 					float scale = min(float(window.getSize().x) / float(ssize.x),
 						float(window.getSize().y) / float(ssize.y));
@@ -709,7 +708,6 @@ int main(int argc, char *argv[]) {
 					if (s > SETTINGS.stg.preview_time)
 					{
 						taken_screenshot = false;
-						free(screenshot_data);
 					}
 				}
 			}
